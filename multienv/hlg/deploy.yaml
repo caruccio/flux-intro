@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  namespace: default
+spec:
+  template:
+    spec:
+      containers:
+      - image: nginx:1.21.0
+        name: nginx
+        resources:
+          limits:
+            cpu: 10m
+            memory: 32Mi
+        env:
+        - name: ENV
+          value: hgl
