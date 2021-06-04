@@ -7,7 +7,7 @@ spec:
   template:
     spec:
       containers:
-      - image: nginx:1.21.0
+      - image: nginx:1.10.0
         name: nginx
         resources:
           requests:
