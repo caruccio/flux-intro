@@ -105,15 +105,11 @@ curl --resolve kind.io:80:$INGRESS_IP http://kind.io/
 ```
 
 ```
-kubectl delete ks app -n flux-system
+kubectl delete ks simple -n flux-system
 kubectl delete deploy,svc,ing --all -n default
 ```
 
 ### Multi Environment app
-
-#### Install kustomize + kubeval
-
-#### 
 
 ```
 
