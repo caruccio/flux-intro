@@ -23,6 +23,9 @@ spec:
       - image: nginx:1.21.0
         name: nginx
         resources: {}
+        env:
+        - name: HELLO
+          value: world
 status: {}
 ---
 apiVersion: v1
