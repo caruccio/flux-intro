@@ -10,6 +10,7 @@ spec:
     kind: GitRepository
     name: app
   path: /multi/hlg
+  prune: true
 
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
@@ -23,3 +24,4 @@ spec:
     kind: GitRepository
     name: app
   path: /multi/prd
+  prune: true
