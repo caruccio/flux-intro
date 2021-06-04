@@ -5,6 +5,7 @@ metadata:
   name: multi-hlg
   namespace: flux-system
 spec:
+  interval: 1m
   sourceRef:
     kind: GitRepository
     name: app
@@ -17,6 +18,7 @@ metadata:
   name: multi-prd
   namespace: flux-system
 spec:
+  interval: 1m
   sourceRef:
     kind: GitRepository
     name: app
