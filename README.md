@@ -23,10 +23,10 @@ sudo install --mode=755 flux $BIN_DIR
 rm -f flux
 ```
 
-# Criar cluster KinD
+# Criar cluster Kind HLG
 
 ```
-kind create cluster --name flux # --config kindconfig.yaml
+kind create cluster --name flux-hlg # --config kindconfig.yaml
 ```
 
 # Instalar Flux2
@@ -87,12 +87,6 @@ kubectl edit hr/ingress-nginx
 flux create source git app --url https://github.com/caruccio/flux-intro.git --branch main
 ```
 
-# Kustomization
-
-```
-git clone https://github.com/caruccio/flux-intro.git
-```
-
 ### Simple app
 
 ```
@@ -109,8 +103,12 @@ kubectl delete ks simple -n flux-system
 kubectl delete deploy,svc,ing --all -n default
 ```
 
-### Multi Environment app
+# Multi Env app
+
+# Criar cluster Kind PRD
 
 ```
+kind create cluster --name flux-prd # --config kindconfig.yaml
+git clone https://github.com/caruccio/flux-intro.git
 
 ```
