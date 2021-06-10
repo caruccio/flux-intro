@@ -1,0 +1,16 @@
+resources:
+- ../base/
+
+patchesStrategicMerge:
+- ./deploy.yaml
+
+# kubectl >=1.20
+#patches:
+#- path: ./patch.yaml
+#  target:
+#    group: apps
+#    version: v1
+#    kind: Deployment
+#    name: backend
+#    namespace: default
+#    labelSelector: app=backend

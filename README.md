@@ -8,17 +8,17 @@ sudo install -v --mode=755 kind $BIN_DIR
 rm -f kind
 
 curl -sL https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv4.1.3/kustomize_v4.1.3_linux_amd64.tar.gz \
-    | tar xzf - kustomize
+    | tar xz kustomize
 sudo install --mode=755 kustomize $BIN_DIR
 rm -f kustomize
 
 curl -sL https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz \
-    | tar xzf kubeval-linux-amd64.tar.gz kubeval
+    | tar xz kubeval
 sudo install --mode=755 kubeval $BIN_DIR
 rm -f kubeval
 
 curl -sL https://github.com/fluxcd/flux2/releases/download/v0.14.2/flux_0.14.2_linux_amd64.tar.gz \
-    | tar xzf - flux
+    | tar xz flux
 sudo install --mode=755 flux $BIN_DIR
 rm -f flux
 ```
@@ -50,7 +50,7 @@ kubectl get -A helmrepo
 # HelmRelease
 
 ```
-# kubens flux-system
+## kubens flux-system
 kubectl config set contexts.$(kubectl config current-context).namespace flux-system
 
 cat metallb-values.yaml
@@ -72,7 +72,7 @@ $(flux create hr ingress-nginx --chart ingress-nginx --chart-version 3.25.0 --so
     createNamespace: true
 EOF
 
-kubectl get hr
+kubectl get hr -w
 kubectl describe hr/ingress-nginx
 ```
 
@@ -81,10 +81,30 @@ kubectl edit hr/ingress-nginx
 # udpate version 3.30.0
 ```
 
+> mostrar charts dentro do pod do source-controller
+
+# Kustomization
+
+```
+cd kustomize
+grep ^ base/ -r
+
+grep ^ hlg/ -r
+kustomize build hlg/ > hlg.yaml
+
+grep ^ hlg/ -r
+kustomize build prd/ > prd.yaml
+
+diff -pu hlg.yaml prd.yaml
+
+cd ../
+```
+
 # GitRepository
 
 ```
 flux create source git app --url https://github.com/caruccio/flux-intro.git --branch main
+kubectl get gitrepo -A
 ```
 
 ### Simple app

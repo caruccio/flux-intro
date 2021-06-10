@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: default
+spec:
+  replicas: 4
+  template:
+    spec:
+      containers:
+      - image: nginx:1.30.0
+        name: nginx
+        resources:
+          limits:
+            memory: 4Gi
+        env:
+        - name: HELLO
+          value: world
+
