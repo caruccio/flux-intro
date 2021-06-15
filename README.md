@@ -148,9 +148,38 @@ diff -pu hlg.yaml prd.yaml
 cd ../
 ```
 
+##### HLG
+
 ```
 cd complex/
+cat bootstrap/hlg.yaml
 kubectl apply -f bootstrap/hlg.yaml
+
+kubectl get ks -n flux-system
+kubectl get deploy,svc,ing -n default
+
+kubectl delete deploy/nginx svc/nginx ing/nginx -n default
+watch kubectl get deploy,svc,ing -n default
+
+kubectl delete ks/app -n flux-system
+kubectl get deploy,svc,ing -n default
+```
+
+##### PRD
+
+```
+cat bootstrap/prd.yaml                   ##
+kubectl apply -f bootstrap/prd.yaml      ##
+
+kubectl get ks -n flux-system
+kubectl get deploy,svc,ing -n default
+kubectl get deploy,ing -n default -oyaml
+
+kubectl delete deploy/nginx svc/nginx ing/nginx -n default
+watch kubectl get deploy,svc,ing -n default
+
+kubectl delete ks/app -n flux-system
+kubectl get deploy,svc,ing -n default
 ```
 
 # Image Automation
