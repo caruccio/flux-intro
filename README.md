@@ -150,7 +150,7 @@ cd ../
 
 ```
 cd complex/
-kubectl apply -f bootstrap/hlg.yaml -n default
+kubectl apply -f bootstrap/hlg.yaml
 ```
 
 # Image Automation
