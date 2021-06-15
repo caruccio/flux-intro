@@ -18,7 +18,18 @@ spec:
     spec:
       containers:
       - name: nginx
-
+        env:
+        - name: EXIT_CODE
+          value: 0
+        command:
+        - /bin/sh
+        - -c
+        - |-
+          if [ $EXIT_CODE != 0 ]; then
+            sleep 2
+            exit $EXIT_CODE
+          fi
+          exec nginx" -g "daemon off"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -39,3 +50,15 @@ spec:
     spec:
       containers:
       - name: nginx
+        env:
+        - name: EXIT_CODE
+          value: 0
+        command:
+        - /bin/sh
+        - -c
+        - |-
+          if [ $EXIT_CODE != 0 ]; then
+            sleep 2
+            exit $EXIT_CODE
+          fi
+          exec nginx" -g "daemon off"

@@ -1,0 +1,29 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- ../base
+
+## https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesstrategicmerge/
+patchesStrategicMerge:
+- deploy.yaml
+
+## https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesjson6902/
+patchesJson6902:
+- target:
+    version: v1
+    kind: Ingress
+    name: nginx
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: "app.com"
+    - op: add
+      path: /spec/rules/0/http/paths/0
+      value:
+        path: /swagger
+        backend:
+          service:
+            name: ingress-nginx-ingress-nginx-defaultbackend
+            port:
+              number: 80

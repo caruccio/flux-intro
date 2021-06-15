@@ -3,4 +3,4 @@ configInline:
   - name: default
     protocol: layer2
     addresses:
-    - 172.18.100.0-172.18.200.0
+    - __METALLB_RANGE__

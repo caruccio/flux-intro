@@ -23,16 +23,17 @@ sudo install --mode=755 flux $BIN_DIR
 rm -f flux
 ```
 
-# Criar cluster Kind HLG
+# Criar cluster Kind
 
 ```
-kind create cluster --name flux-hlg # --config kindconfig.yaml
+kind create cluster --name flux # --config kindconfig.yaml
+kubectl get node -w
 ```
 
 # Instalar Flux2
 
 ```
-flux install ## --components-extra=image-automation-controller,image-reflector-controller
+flux install
 kubectl get pod -A
 kubectl get crds | grep fluxcd
 kubectl api-resources | grep fluxcd
@@ -50,18 +51,33 @@ kubectl get -A helmrepo
 # HelmRelease
 
 ```
+DOCKER_CIDR=$(docker network inspect kind --format '{{(index .IPAM.Config 0).Subnet}}')
+echo $DOCKER_CIDR
+
+METALLB_RANGE=$(printf "%s-%s" $(cut -f1-2 -d. <<<$DOCKER_CIDR){.100.0,.200.0})
+echo $METALLB_RANGE
+
+sed -e "s/__METALLB_RANGE__/$METALLB_RANGE/" metallb-values.yaml.tpl > metallb-values.yaml
+cat metallb-values.yaml
+
 ## kubens flux-system
 kubectl config set contexts.$(kubectl config current-context).namespace flux-system
 
-cat metallb-values.yaml
 kubectl apply -f - <<EOF
-$(flux create hr metallb --chart metallb --chart-version 2.0.2 --source HelmRepository/bitnami --target-namespace metallb-system  --values ./metallb-values.yaml  --export)
+$(flux create hr metallb \
+        --chart metallb \
+        --chart-version 2.0.2 \
+        --source HelmRepository/bitnami \
+        --target-namespace metallb-system \
+        --values ./metallb-values.yaml \
+        --export)
   install:
     createNamespace: true
 EOF
 
-kubectl get hr
 kubectl describe hr/metallb
+kubectl get hr -w
+flux get hr
 helm ls -A
 ```
 
@@ -70,6 +86,9 @@ kubectl apply -f - <<EOF
 $(flux create hr ingress-nginx --chart ingress-nginx --chart-version 3.25.0 --source HelmRepository/ingress-nginx --target-namespace ingress-nginx --export)
   install:
     createNamespace: true
+  values:
+    defaultBackend:
+      enabled: true
 EOF
 
 kubectl get hr -w
@@ -79,11 +98,40 @@ kubectl describe hr/ingress-nginx
 ```
 kubectl edit hr/ingress-nginx
 # udpate version 3.30.0
+watch flux get hr
 ```
 
 > mostrar charts dentro do pod do source-controller
 
-# Kustomization
+# GitRepository
+
+```
+flux create source git app --url https://github.com/caruccio/flux-intro.git --branch main
+kubectl get gitrepo -A
+flux get source git
+```
+
+### Simple app
+
+```
+flux create kustomization simple --source GitRepository/app --path /simple
+kubectl get ks,gitrepo
+flux get ks
+
+kubectl get svc -n ingress-nginx
+INGRESS_IP=$(kubectl get service -n ingress-nginx ingress-nginx-ingress-nginx-controller -o jsonpath={.status.loadBalancer.ingress[0].ip})
+echo $INGRESS_IP
+curl --resolve kind.io:80:$INGRESS_IP http://kind.io/
+```
+
+```
+kubectl delete ks simple -n flux-system
+kubectl delete deploy,svc,ing --all -n default
+```
+
+### Complex app
+
+#### Kustomize
 
 ```
 cd kustomize
@@ -100,35 +148,19 @@ diff -pu hlg.yaml prd.yaml
 cd ../
 ```
 
-# GitRepository
-
 ```
-flux create source git app --url https://github.com/caruccio/flux-intro.git --branch main
-kubectl get gitrepo -A
+cd complex/
+kubectl apply -f bootstrap/hlg.yaml -n default
 ```
 
-### Simple app
+# Image Automation
 
 ```
-flux create kustomization simple --source GitRepository/app --path /simple
-kubectl get ks,gitrepo -A
-
-INGRESS_IP=$(kubectl get service -n ingress-nginx ingress-nginx-ingress-nginx-controller -o jsonpath={.status.loadBalancer.ingress[0].ip})
-echo $INGRESS_IP
-curl --resolve kind.io:80:$INGRESS_IP http://kind.io/
+flux install --components-extra=image-automation-controller,image-reflector-controller
+kubectl get pod -A
+kubectl get crds | grep fluxcd | egrep '^|.*image.*'
+kubectl api-resources | grep fluxcd | egrep '^|.*image.*'
 ```
 
 ```
-kubectl delete ks simple -n flux-system
-kubectl delete deploy,svc,ing --all -n default
-```
-
-# Multi Env app
-
-# Criar cluster Kind PRD
-
-```
-kind create cluster --name flux-prd # --config kindconfig.yaml
-git clone https://github.com/caruccio/flux-intro.git
-
 ```

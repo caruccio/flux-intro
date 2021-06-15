@@ -15,4 +15,4 @@ spec:
             memory: 32Mi
         env:
         - name: ENV
-          value: hgl
+          value: hlg
