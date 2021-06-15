@@ -18,10 +18,15 @@ patchesJson6902:
     - op: replace
       path: /spec/rules/0/host
       value: "app.com"
+    - op: replace
+      path: /spec/rules/0/http/paths/0/pathType
+      value: Exact
+
     - op: add
       path: /spec/rules/0/http/paths/0
       value:
         path: /swagger
+        pathType: Exact
         backend:
           service:
             name: ingress-nginx-ingress-nginx-defaultbackend
