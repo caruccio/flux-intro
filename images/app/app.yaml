@@ -26,9 +26,9 @@ spec:
         - name: HELLO
           value: world
         - name: IMAGE_NAME
-          value: 0 # {"$imagepolicy": "flux-system:app:name"}
+          value: "" # {"$imagepolicy": "flux-system:app:name"}
         - name: IMAGE_TAG
-          value: 0 # {"$imagepolicy": "flux-system:app:tag"}
+          value: "" # {"$imagepolicy": "flux-system:app:tag"}
 ---
 apiVersion: v1
 kind: Service
