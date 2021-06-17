@@ -2,4 +2,3 @@
 kustomize/hlg.yaml
 kustomize/prd.yaml
 metallb-values.yaml
-
