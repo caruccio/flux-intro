@@ -88,7 +88,7 @@ EOF
 kubectl get hr -w
 kubectl describe hr/ingress-nginx
 
-kubectl get svc -n ingress-nginx
+kubectl get svc -n ingress-nginx -w
 INGRESS_IP=$(kubectl get service -n ingress-nginx ingress-nginx-ingress-nginx-controller -o jsonpath={.status.loadBalancer.ingress[0].ip})
 echo $INGRESS_IP
 ```
@@ -127,7 +127,7 @@ kubectl delete deploy,svc,ing --all -n default
 ## Kustomize
 
 ```
-cd kustomize-example
+cd kustomize
 grep ^ base/ -r
 
 grep ^ hlg/ -r
