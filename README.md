@@ -182,6 +182,13 @@ kubectl delete ks/app -n flux-system
 kubectl get deploy,svc,ing -n default
 ```
 
+
+# Cleanup
+
+```
+kubectl delete -n flux-system ks,gitrepo --all
+```
+
 # Image Automation
 
 ```
@@ -221,7 +228,7 @@ flux get image policy
 ```
 kubectl create secret generic github \
     --from-literal=username=XXX \
-    --from-literal=password=XXX  ## ---> https://github.com/settings/tokens
-cat imageupdateatomation.yaml
+    --from-literal=password=XXX  ## ---> https://github.com/settings/tokens (scope=repo)
 
+cat imageupdateautomation.yaml
 ```

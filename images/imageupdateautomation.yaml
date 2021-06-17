@@ -4,6 +4,10 @@ metadata:
   name: app
   namespace: flux-system
 spec:
+  interval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: app
   git:
     checkout:
       ref:
@@ -15,10 +19,6 @@ spec:
       messageTemplate: '{{range .Updated.Images}}{{println .}}{{end}}'
     push:
       branch: main
-  interval: 1m
-  sourceRef:
-    kind: GitRepository
-    name: app
   update:
     path: /images
     strategy: Setters
