@@ -3,12 +3,10 @@
 ```
 curl -skL https://storage.googleapis.com/kubernetes-release/release/v1.19.10/bin/linux/amd64/kubectl > bin/kubectl
 curl -sL https://github.com/kubernetes-sigs/kind/releases/download/v0.11.1/kind-linux-amd64 > bin/kind
-curl -sL https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv4.1.3/kustomize_v4.1.3_linux_amd64.tar.gz \
-    | tar xzv -C bin/ kustomize
-curl -sL https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz \
-    | tar xzv -C bin/ kubeval
-curl -sL https://github.com/fluxcd/flux2/releases/download/v0.14.2/flux_0.14.2_linux_amd64.tar.gz \
-    | tar xzv -C bin flux
+curl -sL https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv4.1.3/kustomize_v4.1.3_linux_amd64.tar.gz | tar xzv -C bin/ kustomize
+curl -sL https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz | tar xzv -C bin/ kubeval
+curl -sL https://github.com/fluxcd/flux2/releases/download/v0.14.2/flux_0.14.2_linux_amd64.tar.gz | tar xzv -C bin flux
+curl -skL https://get.helm.sh/helm-v3.2.4-linux-amd64.tar.gz | tar xz -C bin --transform=s,.*,helm, linux-amd64/helm
 
 chmod +x bin/*
 export PATH=$PWD/bin:$PATH
@@ -28,6 +26,9 @@ flux install
 kubectl get pod -A
 kubectl get crds | grep fluxcd
 kubectl api-resources | grep fluxcd
+
+## kubens flux-system
+kubectl config set contexts.$(kubectl config current-context).namespace flux-system
 ```
 
 # HelmRepository
@@ -50,9 +51,6 @@ echo $METALLB_RANGE
 
 sed -e "s/__METALLB_RANGE__/$METALLB_RANGE/" metallb-values.yaml.tpl > metallb-values.yaml
 cat metallb-values.yaml
-
-## kubens flux-system
-kubectl config set contexts.$(kubectl config current-context).namespace flux-system
 
 kubectl apply -f - <<EOF
 $(flux create hr metallb \
