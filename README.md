@@ -83,7 +83,12 @@ helm ls -A
 
 ```
 kubectl apply -f - <<EOF
-$(flux create hr ingress-nginx --chart ingress-nginx --chart-version 3.25.0 --source HelmRepository/ingress-nginx --target-namespace ingress-nginx --export)
+$(flux create hr ingress-nginx \
+    --chart ingress-nginx \
+    --chart-version 3.25.0 \
+    --source HelmRepository/ingress-nginx \
+    --target-namespace ingress-nginx \
+    --export)
   install:
     createNamespace: true
   values:
@@ -93,6 +98,10 @@ EOF
 
 kubectl get hr -w
 kubectl describe hr/ingress-nginx
+
+kubectl get svc -n ingress-nginx
+INGRESS_IP=$(kubectl get service -n ingress-nginx ingress-nginx-ingress-nginx-controller -o jsonpath={.status.loadBalancer.ingress[0].ip})
+echo $INGRESS_IP
 ```
 
 ```
@@ -118,9 +127,6 @@ flux create kustomization simple --source GitRepository/app --path /simple
 kubectl get ks,gitrepo
 flux get ks
 
-kubectl get svc -n ingress-nginx
-INGRESS_IP=$(kubectl get service -n ingress-nginx ingress-nginx-ingress-nginx-controller -o jsonpath={.status.loadBalancer.ingress[0].ip})
-echo $INGRESS_IP
 curl --resolve kind.io:80:$INGRESS_IP http://kind.io/
 ```
 
@@ -186,12 +192,15 @@ kubectl get deploy,svc,ing -n default
 # Cleanup
 
 ```
-kubectl delete -n flux-system ks,gitrepo --all
+cd ..
+bash reset.sh
 ```
 
 # Image Automation
 
 ```
+cd images/
+
 flux install --components-extra=image-automation-controller,image-reflector-controller
 kubectl get pod -A
 kubectl get crds | grep fluxcd | egrep '^|.*image.*'
@@ -199,10 +208,10 @@ kubectl api-resources | grep fluxcd | egrep '^|.*image.*'
 ```
 
 ```
-export REPO=XXX ## <----- definir valor -----
+export REPO=XXX ## <----- Docker Hub username -----
 
 make release APP_VERSION=1.0.0 REPO=$REPO
-make run APP_VERSION=1.0.0 REPO=$REPO &
+make run APP_VERSION=1.0.0 REPO=$REPO
 docker ps
 curl 127.0.0.1:8080
 make stop
@@ -210,11 +219,11 @@ make stop
 
 ```
 cat imagerepo.yaml
-kubectl apply -n imagerepo.yaml
+kubectl apply -f imagerepo.yaml
 flux get image repository
 
 cat imagepolicy.yaml
-kubectl apply -n imagepolicy.yaml
+kubectl apply -f imagepolicy.yaml
 flux get image policy
 ```
 
@@ -222,13 +231,34 @@ flux get image policy
 make release APP_VERSION=1.0.1 REPO=$REPO
 
 flux reconcile image repository app
-flux get image policy
+flux get image all
 ```
 
 ```
-kubectl create secret generic github \
-    --from-literal=username=XXX \
-    --from-literal=password=XXX  ## ---> https://github.com/settings/tokens (scope=repo)
+GITHUB_USERNAME=caruccio
+GITHUB_PASSWORD=XXXXXXXX ## ---> https://github.com/settings/tokens (scope=repo)
 
+flux create source git app \
+    --url https://github.com/caruccio/flux-intro.git \
+    --branch main \
+    --username "$GITHUB_USERNAME" \
+    --password "$GITHUB_PASSWORD"
+
+flux get source git
+kubectl get secret
+
+flux create kustomization app \
+    --source GitRepository/app \
+    --path /images/app
+```
+
+```
 cat imageupdateautomation.yaml
+kubectl apply -f imageupdateautomation.yaml
+
+flux get image all
 ```
+
+```
+make release APP_VERSION=1.0.1 REPO=$REPO
+
