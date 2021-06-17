@@ -1,26 +1,16 @@
 # Baixar binarios
 
 ```
-BIN_DIR=/usr/local/bin/
-
-curl -sL https://github.com/kubernetes-sigs/kind/releases/download/v0.11.1/kind-linux-amd64 > kind
-sudo install -v --mode=755 kind kind
-rm -f kind
-
+curl -sL https://github.com/kubernetes-sigs/kind/releases/download/v0.11.1/kind-linux-amd64 > bin/kind
 curl -sL https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv4.1.3/kustomize_v4.1.3_linux_amd64.tar.gz \
-    | tar xz kustomize
-sudo install --mode=755 kustomize $BIN_DIR
-rm -f kustomize
-
+    | tar xz kustomize -C bin/
 curl -sL https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz \
-    | tar xz kubeval
-sudo install --mode=755 kubeval $BIN_DIR
-rm -f kubeval
-
+    | tar xz kubeval -C bin/
 curl -sL https://github.com/fluxcd/flux2/releases/download/v0.14.2/flux_0.14.2_linux_amd64.tar.gz \
-    | tar xz flux
-sudo install --mode=755 flux $BIN_DIR
-rm -f flux
+    | tar xz flux -C bin
+
+chmod +x bin/*
+export PATH=$PWD/bin:$PATH
 ```
 
 # Criar cluster Kind
