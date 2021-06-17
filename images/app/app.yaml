@@ -28,7 +28,7 @@ spec:
         - name: IMAGE_NAME
           value: "caruccio/app" # {"$imagepolicy": "flux-system:app:name"}
         - name: IMAGE_TAG
-          value: "1.0.3" # {"$imagepolicy": "flux-system:app:tag"}
+          value: "1.0.0" # {"$imagepolicy": "flux-system:app:tag"}
 ---
 apiVersion: v1
 kind: Service
