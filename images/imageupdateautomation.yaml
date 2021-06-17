@@ -20,6 +20,6 @@ spec:
     push:
       branch: main
   update:
-    path: /images
+    path: /images/app
     strategy: Setters
 

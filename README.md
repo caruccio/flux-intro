@@ -220,17 +220,10 @@ make stop
 ```
 cat imagerepo.yaml
 kubectl apply -f imagerepo.yaml
-flux get image repository
+flux get image all
 
 cat imagepolicy.yaml
 kubectl apply -f imagepolicy.yaml
-flux get image policy
-```
-
-```
-make release APP_VERSION=1.0.1 REPO=$REPO
-
-flux reconcile image repository app
 flux get image all
 ```
 
@@ -245,11 +238,21 @@ flux create source git app \
     --password "$GITHUB_PASSWORD"
 
 flux get source git
-kubectl get secret
+kubectl describe secret app
 
 flux create kustomization app \
     --source GitRepository/app \
     --path /images/app
+
+flux get ks
+kubectl describe deployment app -n default
+```
+
+```
+make release APP_VERSION=1.0.1 REPO=$REPO
+
+flux reconcile image repository app
+flux get image all
 ```
 
 ```
@@ -260,5 +263,5 @@ flux get image all
 ```
 
 ```
-make release APP_VERSION=1.0.1 REPO=$REPO
+make release APP_VERSION=1.0.2 REPO=$REPO
 
