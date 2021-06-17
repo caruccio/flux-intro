@@ -4,7 +4,7 @@
 BIN_DIR=/usr/local/bin/
 
 curl -sL https://github.com/kubernetes-sigs/kind/releases/download/v0.11.1/kind-linux-amd64 > kind
-sudo install -v --mode=755 kind $BIN_DIR
+sudo install -v --mode=755 kind kind
 rm -f kind
 
 curl -sL https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv4.1.3/kustomize_v4.1.3_linux_amd64.tar.gz \
@@ -120,7 +120,7 @@ kubectl get gitrepo -A
 flux get source git
 ```
 
-### Simple app
+## Simple app
 
 ```
 flux create kustomization simple --source GitRepository/app --path /simple
@@ -135,12 +135,10 @@ kubectl delete ks simple -n flux-system
 kubectl delete deploy,svc,ing --all -n default
 ```
 
-### Complex app
-
-#### Kustomize
+## Kustomize
 
 ```
-cd kustomize
+cd kustomize-example
 grep ^ base/ -r
 
 grep ^ hlg/ -r
@@ -154,7 +152,7 @@ diff -pu hlg.yaml prd.yaml
 cd ../
 ```
 
-##### HLG
+## Complex app
 
 ```
 cd complex/
@@ -170,24 +168,6 @@ watch kubectl get deploy,svc,ing -n default
 kubectl delete ks/app -n flux-system
 kubectl get deploy,svc,ing -n default
 ```
-
-##### PRD
-
-```
-cat bootstrap/prd.yaml                   ##
-kubectl apply -f bootstrap/prd.yaml      ##
-
-kubectl get ks -n flux-system
-kubectl get deploy,svc,ing -n default
-kubectl get deploy,ing -n default -oyaml
-
-kubectl delete deploy/nginx svc/nginx ing/nginx -n default
-watch kubectl get deploy,svc,ing -n default
-
-kubectl delete ks/app -n flux-system
-kubectl get deploy,svc,ing -n default
-```
-
 
 # Cleanup
 
@@ -262,7 +242,6 @@ flux get image all
 kubectl describe deployment app -n default
 
 ```
-
 
 ```
 kubectl get deploy -n default -w   ## <---- outro terminal
