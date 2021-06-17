@@ -26,9 +26,9 @@ spec:
         - name: HELLO
           value: world
         - name: IMAGE_NAME
-          value: "" # {"$imagepolicy": "flux-system:app:name"}
+          value: "caruccio/app" # {"$imagepolicy": "flux-system:app:name"}
         - name: IMAGE_TAG
-          value: "" # {"$imagepolicy": "flux-system:app:tag"}
+          value: "1.0.2" # {"$imagepolicy": "flux-system:app:tag"}
 ---
 apiVersion: v1
 kind: Service
