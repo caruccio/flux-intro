@@ -1,4 +1,3 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -20,7 +19,7 @@ spec:
         app: app
     spec:
       containers:
-      - image: caruccio/app:1.0.0 # {"$imagepolicy": "flux-system:app"}
+      - image: caruccio/app:1.0.1 # {"$imagepolicy": "flux-system:app"}
         name: nginx
         resources: {}
         env:
