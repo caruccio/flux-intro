@@ -39,7 +39,9 @@ $(flux create hr ingress-nginx \
 EOF
 
 until kubectl get svc -n ingress-nginx ingress-nginx-ingress-nginx-controller 2>/dev/null; do
+  echo -n .
   sleep 1
 done
+echo
 
 echo  "Ingress IP:" $(kubectl get service -n ingress-nginx ingress-nginx-ingress-nginx-controller -o jsonpath={.status.loadBalancer.ingress[0].ip})

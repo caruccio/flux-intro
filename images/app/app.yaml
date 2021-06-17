@@ -19,7 +19,7 @@ spec:
         app: app
     spec:
       containers:
-      - image: caruccio/app:1.0.3 # {"$imagepolicy": "flux-system:app"}
+      - image: caruccio/app:1.0.0 # {"$imagepolicy": "flux-system:app"}
         name: nginx
         resources: {}
         env:

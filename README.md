@@ -174,6 +174,10 @@ flux install --components-extra=image-automation-controller,image-reflector-cont
 kubectl get pod -A
 kubectl get crds | grep fluxcd | egrep '^|.*image.*'
 kubectl api-resources | grep fluxcd | egrep '^|.*image.*'
+
+flux get source all
+flux get ks
+flux get hr
 ```
 
 ```
