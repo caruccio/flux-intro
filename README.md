@@ -249,19 +249,23 @@ kubectl describe deployment app -n default
 ```
 
 ```
+cat imageupdateautomation.yaml
+kubectl apply -f imageupdateautomation.yaml
+flux get image all
+```
+
+```
 make release APP_VERSION=1.0.1 REPO=$REPO
 
 flux reconcile image repository app
 flux get image all
-```
+kubectl describe deployment app -n default
 
 ```
-cat imageupdateautomation.yaml
-kubectl apply -f imageupdateautomation.yaml
 
-flux get image all
-```
 
 ```
+kubectl get pod -n default -w   ## <---- outro terminal
+
 make release APP_VERSION=1.0.2 REPO=$REPO
-
+```
