@@ -265,7 +265,8 @@ kubectl describe deployment app -n default
 
 
 ```
-kubectl get pod -n default -w   ## <---- outro terminal
+kubectl get deploy -n default -w   ## <---- outro terminal
 
 make release APP_VERSION=1.0.2 REPO=$REPO
+flux reconcile image repository app
 ```
