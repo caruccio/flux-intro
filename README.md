@@ -1,13 +1,14 @@
 # Baixar binarios
 
 ```
+curl -skL https://storage.googleapis.com/kubernetes-release/release/v1.19.10/bin/linux/amd64/kubectl > bin/kubectl
 curl -sL https://github.com/kubernetes-sigs/kind/releases/download/v0.11.1/kind-linux-amd64 > bin/kind
 curl -sL https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv4.1.3/kustomize_v4.1.3_linux_amd64.tar.gz \
-    | tar xz kustomize -C bin/
+    | tar xzv -C bin/ kustomize
 curl -sL https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz \
-    | tar xz kubeval -C bin/
+    | tar xzv -C bin/ kubeval
 curl -sL https://github.com/fluxcd/flux2/releases/download/v0.14.2/flux_0.14.2_linux_amd64.tar.gz \
-    | tar xz flux -C bin
+    | tar xzv -C bin flux
 
 chmod +x bin/*
 export PATH=$PWD/bin:$PATH
