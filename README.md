@@ -192,4 +192,36 @@ kubectl api-resources | grep fluxcd | egrep '^|.*image.*'
 ```
 
 ```
+export REPO=XXX ## <----- definir valor -----
+
+make release APP_VERSION=1.0.0 REPO=$REPO
+make run APP_VERSION=1.0.0 REPO=$REPO &
+docker ps
+curl 127.0.0.1:8080
+make stop
+```
+
+```
+cat imagerepo.yaml
+kubectl apply -n imagerepo.yaml
+flux get image repository
+
+cat imagepolicy.yaml
+kubectl apply -n imagepolicy.yaml
+flux get image policy
+```
+
+```
+make release APP_VERSION=1.0.1 REPO=$REPO
+
+flux reconcile image repository app
+flux get image policy
+```
+
+```
+kubectl create secret generic github \
+    --from-literal=username=XXX \
+    --from-literal=password=XXX  ## ---> https://github.com/settings/tokens
+cat imageupdateatomation.yaml
+
 ```
