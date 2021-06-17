@@ -181,10 +181,10 @@ flux get hr
 ```
 
 ```
-export REPO=XXX ## <----- Docker Hub username -----
+export DOCKER_REPO=XXX ## <----- Docker Hub username -----
 
-make release APP_VERSION=1.0.0 REPO=$REPO
-make run APP_VERSION=1.0.0 REPO=$REPO
+make release APP_VERSION=1.0.0 DOCKER_REPO=$DOCKER_REPO
+make run APP_VERSION=1.0.0 DOCKER_REPO=$DOCKER_REPO
 docker ps
 curl 127.0.0.1:8080
 make stop
@@ -201,8 +201,8 @@ flux get image all
 ```
 
 ```
-GITHUB_USERNAME=caruccio
-GITHUB_PASSWORD=XXXXXXXX ## ---> https://github.com/settings/tokens (scope=repo)
+export GITHUB_USERNAME=caruccio
+export GITHUB_PASSWORD=XXXXXXXX ## ---> https://github.com/settings/tokens (scope=repo)
 
 flux create source git app \
     --url https://github.com/caruccio/flux-intro.git \
@@ -218,7 +218,7 @@ flux create kustomization app \
     --path /images/app
 
 flux get ks
-kubectl describe deployment app -n default
+kubectl get deployment app -n default -o wide
 ```
 
 ```
@@ -228,17 +228,16 @@ flux get image all
 ```
 
 ```
-make release APP_VERSION=1.0.1 REPO=$REPO
+make release APP_VERSION=1.0.1 DOCKER_REPO=$DOCKER_REPO
 
 flux reconcile image repository app
 flux get image all
 kubectl describe deployment app -n default
-
 ```
 
 ```
 kubectl get deploy -n default -w   ## <---- outro terminal
 
-make release APP_VERSION=1.0.2 REPO=$REPO
+make release APP_VERSION=1.0.2 DOCKER_REPO=$DOCKER_REPO
 flux reconcile image repository app
 ```
