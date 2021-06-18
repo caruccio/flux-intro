@@ -40,6 +40,9 @@ kubectl get -A helmrepo
 ```
 > mostrar repositorio dentro do pod do source-controller
 
+>> mostrar md5sum com formatacao flux
+>> mostrar interval
+
 # HelmRelease
 
 ```
@@ -133,7 +136,7 @@ grep ^ base/ -r
 grep ^ hlg/ -r
 kustomize build hlg/ > hlg.yaml
 
-grep ^ hlg/ -r
+grep ^ prd/ -r
 kustomize build prd/ > prd.yaml
 
 diff -pu hlg.yaml prd.yaml
