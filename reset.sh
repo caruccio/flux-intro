@@ -38,10 +38,14 @@ $(flux create hr ingress-nginx \
       enabled: true
 EOF
 
-until kubectl get svc -n ingress-nginx ingress-nginx-ingress-nginx-controller 2>/dev/null; do
-  echo -n .
-  sleep 1
+while sleep 1; do
+    ip=$(kubectl get svc -n ingress-nginx ingress-nginx-ingress-nginx-controller -o jsonpath={.status.loadBalancer.ingress[0].ip} 2>/dev/null)
+    if [ -z "$ip" ] || [ "$ip" == '<pending>' ]; then
+      echo -n .
+    else
+        break
+    fi
 done
 echo
 
-echo  "Ingress IP:" $(kubectl get service -n ingress-nginx ingress-nginx-ingress-nginx-controller -o jsonpath={.status.loadBalancer.ingress[0].ip})
+echo  "Ingress IP:" $ip
