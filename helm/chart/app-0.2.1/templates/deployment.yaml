@@ -20,4 +20,4 @@ spec:
         command:
         - /bin/cat
         tty: true
-        stdout: true
+        stdin: true

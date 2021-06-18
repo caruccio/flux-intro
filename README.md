@@ -241,3 +241,4 @@ kubectl get deploy -n default -w   ## <---- outro terminal
 make release APP_VERSION=1.0.2 DOCKER_REPO=$DOCKER_REPO
 flux reconcile image repository app
 ```
+

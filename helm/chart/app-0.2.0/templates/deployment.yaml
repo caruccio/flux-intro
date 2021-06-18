@@ -20,4 +20,4 @@ spec:
         command:
         - /bin/false
         tty: true
-        stdout: true
+        stdin: true

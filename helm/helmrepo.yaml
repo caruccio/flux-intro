@@ -4,7 +4,5 @@ metadata:
   name: app
   namespace: flux-system
 spec:
-  interval: 30s
-  ref:
-    branch: main
-  url: https://github.com/caruccio/app
+  interval: 1m
+  url: https://raw.githubusercontent.com/caruccio/flux-intro/main/helm/chart/repo/
