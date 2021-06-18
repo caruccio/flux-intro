@@ -19,14 +19,13 @@ spec:
         app: app
     spec:
       containers:
-      - image: caruccio/app:1.0.2 # {"$imagepolicy": "flux-system:app"}
+      - image: caruccio/app:1.0.0 # {"$imagepolicy": "flux-system:app"}
         name: nginx
-        resources: {}
         env:
         - name: IMAGE_NAME
           value: "caruccio/app" # {"$imagepolicy": "flux-system:app:name"}
         - name: IMAGE_TAG
-          value: "1.0.2" # {"$imagepolicy": "flux-system:app:tag"}
+          value: "1.0.0" # {"$imagepolicy": "flux-system:app:tag"}
 ---
 apiVersion: v1
 kind: Service
