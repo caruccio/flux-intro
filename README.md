@@ -217,17 +217,29 @@ flux get image all
 ```
 
 ```
-export GITHUB_USERNAME=caruccio
-export GITHUB_PASSWORD=XXXXXXXX ## ---> https://github.com/settings/tokens (scope=repo)
+ssh-keygen -t ecdsa -f github.key
+ssh-keyscan github.com > known_hosts
+
+cat github.key.pub
+cat known_hosts
+
+> Instalar github.key.pub no repo github:
+>> https://github.com/caruccio/flux-intro/settings/keys/new
+>> [X] Allow write access
+
+kubectl create secret generic github -n flux-system \
+    --from-file identity=github.key \
+    --from-file identity.pub=github.key.pub \
+    --from-file known_hosts=known_hosts
+
+kubectl describe secret app
 
 flux create source git app \
-    --url https://github.com/caruccio/flux-intro.git \
+    --url ssh://git@github.com/caruccio/flux-intro \
     --branch main \
-    --username "$GITHUB_USERNAME" \
-    --password "$GITHUB_PASSWORD"
+    --secret-ref github
 
 flux get source git
-kubectl describe secret app
 
 flux create kustomization app \
     --source GitRepository/app \

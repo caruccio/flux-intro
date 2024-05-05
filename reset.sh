@@ -1,5 +1,8 @@
 #!/bin/bash
 
+sed -e 's/1.0.[0-9]\+/1.0.0/g' app/app.yaml
+git commit -am 'Reset' && git push -u origin main || true
+
 kind delete cluster --name flux
 kind create cluster --name flux
 
@@ -15,7 +18,7 @@ sed -e "s/__METALLB_RANGE__/$METALLB_RANGE/" metallb-values.yaml.tpl > metallb-v
 kubectl apply -f - <<EOF
 $(flux create hr metallb \
         --chart metallb \
-        --chart-version 2.0.2 \
+        --chart-version 3.0.12 \
         --source HelmRepository/bitnami \
         --target-namespace metallb-system \
         --values ./metallb-values.yaml \
