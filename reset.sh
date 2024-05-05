@@ -6,7 +6,7 @@ git commit -am 'Reset' && git push -u origin main || true
 kind delete cluster --name flux
 kind create cluster --name flux
 
-flux install
+flux install --components-extra=image-automation-controller,image-reflector-controller
 flux create source helm bitnami --url=https://charts.bitnami.com/bitnami
 flux create source helm ingress-nginx --url=https://kubernetes.github.io/ingress-nginx
 kubectl config set contexts.$(kubectl config current-context).namespace flux-system
