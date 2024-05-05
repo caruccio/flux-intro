@@ -55,6 +55,16 @@ metadata:
   namespace: default
 spec:
   rules:
+  - host: kind.local
+    http:
+      paths:
+      - backend:
+          service:
+            name: nginx
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
   - host: kind.io
     http:
       paths:
