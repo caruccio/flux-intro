@@ -115,16 +115,19 @@ flux get source git
 ## Simple app
 
 ```
-flux create kustomization simple --source GitRepository/app --path /simple
+> Mostrar objetos no repo
+
+flux create kustomization simple --source GitRepository/app --path /simple --prune
 kubectl get ks,gitrepo
 flux get ks
+
+> Mostrar ingress kind.io
 
 curl --resolve kind.io:80:$INGRESS_IP http://kind.io/
 ```
 
 ```
 kubectl delete ks simple -n flux-system
-kubectl delete deploy,svc,ing --all -n default
 ```
 
 ## Kustomize
@@ -149,17 +152,30 @@ cd ../
 ```
 cd complex/
 cat bootstrap/hlg.yaml
+
+> Mostrar /complex/hlg
+
 kubectl apply -f bootstrap/hlg.yaml
 
 kubectl get ks -n flux-system
 kubectl get deploy,svc,ing -n default
 
+watch -n1 kubectl get ks,pod -A
+
 kubectl delete deploy/nginx svc/nginx ing/nginx -n default
-watch kubectl get deploy,svc,ing -n default
+
+> Editar no github o /complex/hlg/deploy.yaml e mostrar o reconcile
 
 kubectl delete ks/app -n flux-system
 kubectl get deploy,svc,ing -n default
 ```
+
+
+
+##################################################
+
+
+
 
 # Cleanup
 
