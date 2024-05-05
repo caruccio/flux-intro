@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sed -e 's/1.0.[0-9]\+/1.0.0/g' app/app.yaml
+sed -e 's/1.0.[0-9]\+/1.0.0/g' images/app/app.yaml
 git commit -am 'Reset' && git push -u origin main || true
 
 kind delete cluster --name flux
