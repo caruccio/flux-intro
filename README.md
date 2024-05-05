@@ -17,6 +17,7 @@ export PATH=$PWD/bin:$PATH
 ```
 kind create cluster --name flux # --config kindconfig.yaml
 kubectl get node -w
+watch -n 1 kubectl get pods --all-namespaces
 ```
 
 # Instalar Flux2
