@@ -86,7 +86,7 @@ $(flux create hr ingress-nginx \
     createNamespace: true
   values:
     defaultBackend:
-      enabled: true
+      enabled: false
 EOF
 
 kubectl get hr -w
@@ -99,7 +99,7 @@ echo $INGRESS_IP
 
 ```
 kubectl edit hr/ingress-nginx
-# udpate version 3.30.0
+# spec.values.defaultBackend.enabled: true
 watch flux get hr
 ```
 

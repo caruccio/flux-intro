@@ -38,7 +38,7 @@ $(flux create hr ingress-nginx \
     createNamespace: true
   values:
     defaultBackend:
-      enabled: true
+      enabled: false
 EOF
 
 while sleep 1; do
