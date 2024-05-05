@@ -58,7 +58,7 @@ cat metallb-values.yaml
 kubectl apply -f - <<EOF
 $(flux create hr metallb \
         --chart metallb \
-        --chart-version 2.0.2 \
+        --chart-version 3.0.12 \
         --source HelmRepository/bitnami \
         --target-namespace metallb-system \
         --values ./metallb-values.yaml \

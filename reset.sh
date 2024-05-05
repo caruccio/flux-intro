@@ -15,7 +15,7 @@ sed -e "s/__METALLB_RANGE__/$METALLB_RANGE/" metallb-values.yaml.tpl > metallb-v
 kubectl apply -f - <<EOF
 $(flux create hr metallb \
         --chart metallb \
-        --chart-version 2.0.2 \
+        --chart-version 3.0.12 \
         --source HelmRepository/bitnami \
         --target-namespace metallb-system \
         --values ./metallb-values.yaml \
